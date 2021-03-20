@@ -1,0 +1,15 @@
+---
+title: "Stat 302 Project 3 Part 2"
+author: "Ian Renshaw"
+date: "3/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("../Code/my_rf_cv.R")
+my_rf_cv(7)
+```
