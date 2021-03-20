@@ -23,7 +23,6 @@ library(randomForest)
 library(tidyverse)
 
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 p_data <- read.csv("../Data/my_penguins.csv") %>% drop_na()
 p_data <- p_data[, -1]
 
