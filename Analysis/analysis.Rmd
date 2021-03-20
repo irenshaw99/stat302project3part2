@@ -38,11 +38,15 @@ for(i in 1:30) {
   fold_10[i] <- my_rf_cv(10)
 }
 
+# data frame of results from the simulations
+sim_results <- data.frame("two_folds" = fold_2, "five_folds" = fold_5, "ten_folds" = fold_10)
+
 # Create data frame for CVE to use for plotting
 df <- data.frame(CVE = fold_2, folds = "2")
 df <- rbind(df, data.frame(CVE = fold_5, folds = "5"))
 df <- rbind(df, data.frame(CVE = fold_10, folds = "10"))
 
+# Boxplot comparing CVE for different numbers of folds
 folds_boxplot <- ggplot(data = df, aes(x = folds, y = CVE)) +
   geom_boxplot() +
   labs(x = "Folds", y = "Cross-Validation Error", title = "CV error comparison")
@@ -71,6 +75,7 @@ folds_boxplot
 
 
 ```{r, echo = FALSE, eval = TRUE}
+# Table comparing summary statistics of CVE for different numbers of folds
 sum_stats <- data.frame(folds = 2,
            min = summary(fold_2)[[1]],
            first_quartile = summary(fold_2)[[2]],
@@ -100,11 +105,103 @@ sum_stats <- data.frame(folds = 2,
            standard_deviation = sd(fold_10)))
 ```
 
+
 Comparison of summary statistics for the CVE of different numbers of folds across 30 simiulations:
 ```{r echo = FALSE, eval = TRUE}
 sum_stats
 ```
 
+
+Save output as files:
+```{r echo = TRUE, eval = TRUE}
+# Save boxplot as png to /Output/Figures
+ggsave("../Output/Figures/folds_boxplot.png", folds_boxplot)
+
+# Save table of summary statistics as an rds file to /Output/Results
+saveRDS(sum_stats, "../Output/Results/sum_stats.rds")
+
+# Save data frame of simulation results as a csv file to /Output/Results
+write.csv(sim_results, "../Output/Results/sim_results.csv")
+```
+
 # Conclusion
 
 In conclusion, through the second part of project 3, I have learned how to navigate a data analysis project pipeline. I set up a cross-validation analysis using the my_rf_cv function and adapted earlier code to fit the project pipeline. The my_rf_cv function is loaded from the Code folder and uses the my_penguin data from the Data folder. The generated output is stored in the Output folder, in the respective subfolders.
+
+
+
+#### Code Appendix
+```{r echo = TRUE, eval = FALSE}
+source("../Code/my_rf_cv.R")
+
+# Random forest cross-validation with 2 folds
+fold_2 <- c(1:30)
+for(i in 1:30) {
+  fold_2[i] <- my_rf_cv(2)
+}
+
+# Random forest cross-validation with 5 folds
+fold_5 <- c(1:30)
+for(i in 1:30) {
+  fold_5[i] <- my_rf_cv(5)
+}
+
+# Random forest cross-validation with 10 folds
+fold_10 <- c(1:30)
+for(i in 1:30) {
+  fold_10[i] <- my_rf_cv(10)
+}
+
+# data frame of results from the simulations
+sim_results <- data.frame("two_folds" = fold_2, "five_folds" = fold_5, "ten_folds" = fold_10)
+
+# Create data frame for CVE to use for plotting
+df <- data.frame(CVE = fold_2, folds = "2")
+df <- rbind(df, data.frame(CVE = fold_5, folds = "5"))
+df <- rbind(df, data.frame(CVE = fold_10, folds = "10"))
+
+# Boxplot comparing CVE for different numbers of folds
+folds_boxplot <- ggplot(data = df, aes(x = folds, y = CVE)) +
+  geom_boxplot() +
+  labs(x = "Folds", y = "Cross-Validation Error", title = "CV error comparison")
+
+# Table comparing summary statistics of CVE for different numbers of folds
+sum_stats <- data.frame(folds = 2,
+           min = summary(fold_2)[[1]],
+           first_quartile = summary(fold_2)[[2]],
+           median = summary(fold_2)[[3]],
+           mean = summary(fold_2)[[4]],
+           third_quartile = summary(fold_2)[[5]],
+           max = summary(fold_2)[[6]],
+           variance = var(fold_2),
+           standard_deviation = sd(fold_2)) %>%
+    rbind(data.frame(folds = 5,
+           min = summary(fold_5)[[1]],
+           first_quartile = summary(fold_5)[[2]],
+           median = summary(fold_5)[[3]],
+           mean = summary(fold_5)[[4]],
+           third_quartile = summary(fold_2)[[5]],
+           max = summary(fold_5)[[6]],
+           variance = var(fold_5),
+           standard_deviation = sd(fold_5))) %>%
+    rbind(data.frame(folds = 10,
+           min = summary(fold_10)[[1]],
+           first_quartile = summary(fold_10)[[2]],
+           median = summary(fold_10)[[3]],
+           mean = summary(fold_10)[[4]],
+           third_quartile = summary(fold_10)[[5]],
+           max = summary(fold_10)[[6]],
+           variance = var(fold_10),
+           standard_deviation = sd(fold_10)))
+
+
+
+# Save boxplot as png to /Output/Figures
+ggsave("../Output/Figures/folds_boxplot.png", folds_boxplot)
+
+# Save table of summary statistics as an rds file to /Output/Results
+saveRDS(sum_stats, "../Output/Results/sum_stats.rds")
+
+# Save data frame of simulation results as a csv file to /Output/Results
+write.csv(sim_results, "../Output/Results/sim_results.csv")
+```
