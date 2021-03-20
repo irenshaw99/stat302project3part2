@@ -112,6 +112,9 @@ sum_stats
 ```
 
 
+The boxplot and table suggets that the cross-validation error decreases as the number of folds increases. With 2 folds, the error seems to be significantly higher whereas the difference in error between 5 and 10 folds is less noticeable. However, the boxplots suggest that there is less variance in error when there are 10 folds, compared to when there are 5. The table suggests the same, as cross-validation with 10 folds had the lowest standard deviation in its error. The table also shows that with only 2 folds, the standard deviation is much higher. The results suggest that the mean and standard deviation of the error decrease as the number of folds increase. I believe that this is the case because when we have a higher number of folds, this means that the amount of data we use as training data for our prediction increases, meaning that there is less room for error.
+
+
 Save output as files:
 ```{r echo = TRUE, eval = TRUE}
 # Save boxplot as png to /Output/Figures
